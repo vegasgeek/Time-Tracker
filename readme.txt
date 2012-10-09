@@ -13,6 +13,7 @@ Setup:
 - Use the Gravity Forms form imported to import other-assets/import-these-gravityforms.xml
 - On the Settings->Reading tab, set the posts per page to 999 and set the front page to Static and choose "Add Hours"
 - On the Settings->Permalinks page, select Post Name
+- Create a menu and add "Add Hours" as the only link (the rest of the links are added automatically for admin users only)
 
 That's all, folks.
 
