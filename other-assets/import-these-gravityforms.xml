@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<forms version="1.6.3.3.4">
+	<form labelPlacement="top_label" useCurrentUserAsAuthor="1" postAuthor="6" postCategory="1" postFormat="0" postStatus="publish">
+		<title><![CDATA[Hours Submission Form]]></title>
+		<description><![CDATA[We would love to hear from you! Please fill out this form and we will get in touch with you shortly.]]></description>
+		<confirmation type="message">
+			<message><![CDATA[Nice job! Need to <a href="/">add more hours</a>?]]></message>
+		</confirmation>
+		<button type="text">
+			<text><![CDATA[Submit]]></text>
+		</button>
+		<fields>
+			<field id="1" isRequired="1" size="medium" type="select">
+				<cssClass><![CDATA[client-drop]]></cssClass>
+				<label><![CDATA[Client]]></label>
+				<choices>
+					<choice>
+						<text></text>
+					</choice>
+				</choices>
+			</field>
+			<field id="2" isRequired="1" size="small" type="post_custom_field" postCustomFieldName="tt_hours_worked" inputType="text">
+				<label><![CDATA[Hours Worked]]></label>
+			</field>
+			<field id="3" isRequired="1" size="medium" type="post_custom_field" postCustomFieldName="tt_work_date" inputType="date" calendarIconType="none" dateType="datepicker">
+				<label><![CDATA[Work Date]]></label>
+			</field>
+			<field id="4" size="medium" type="post_content">
+				<label><![CDATA[Details]]></label>
+			</field>
+			<field adminOnly="1" id="5" size="medium" type="post_title">
+				<label><![CDATA[Post Title]]></label>
+				<saveAsCPT><![CDATA[hours]]></saveAsCPT>
+			</field>
+			<field id="6" type="post_custom_field" size="medium" inputType="text" adminOnly="1">
+				<label><![CDATA[Who Dunnit]]></label>
+				<defaultValue><![CDATA[{user:user_login}]]></defaultValue>
+			</field>
+		</fields>
+		<descriptionPlacement><![CDATA[below]]></descriptionPlacement>
+		<notification>
+			<to><![CDATA[{admin_email}]]></to>
+			<subject><![CDATA[New submission from {form_title}]]></subject>
+			<message><![CDATA[{all_fields}]]></message>
+		</notification>
+	</form>
+	<form labelPlacement="top_label" useCurrentUserAsAuthor="1">
+		<title><![CDATA[Add Client]]></title>
+		<description><![CDATA[We would love to hear from you! Please fill out this form and we will get in touch with you shortly.]]></description>
+		<confirmation type="message">
+			<message><![CDATA[Thanks for contacting us! We will get in touch with you shortly.]]></message>
+		</confirmation>
+		<button type="text">
+			<text><![CDATA[Submit]]></text>
+		</button>
+		<fields>
+			<field id="1" type="text" size="medium">
+				<label><![CDATA[Client Name]]></label>
+			</field>
+		</fields>
+		<descriptionPlacement><![CDATA[below]]></descriptionPlacement>
+		<notification>
+			<subject><![CDATA[New submission from {form_title}]]></subject>
+			<message><![CDATA[{all_fields}]]></message>
+			<from><![CDATA[{admin_email}]]></from>
+		</notification>
+	</form>
+</forms>
