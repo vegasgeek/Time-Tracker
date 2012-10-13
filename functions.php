@@ -159,7 +159,7 @@ function populate_clients($form) {
 		$posts = get_terms( 'client', 'orderby=title&hide_empty=0' );
 		
 	//	$choices = array(array('text' => 'Select a Client', 'value' => ' '));
-		$choices[] = array ('text' => 'Select a Client', 'value' => '' );
+	//	$choices[] = array ('text' => 'Select a Client', 'value' => '' );
 		
 		foreach($posts as $post){
 			$choices[] = array('text' => $post->name, 'value' => $post->name);
