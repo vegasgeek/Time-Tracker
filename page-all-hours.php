@@ -32,7 +32,7 @@ function tt_do_title() {
 add_action('genesis_post_content', 'short_post');
 function short_post() {
 	global $post;
-	
+		
 	// figure out if the item has already been invoiced
 	if ( has_term( 'invoiced', 'hstatus')) {
 		$row_color = 'invoiced';
