@@ -225,6 +225,7 @@ function tt_mylinks ($nav){
 		$mylinks .= '<li><a href="'.site_url().'/all-hours/">All Hours</a></li>';
 		$mylinks .= '<li><a href="'.site_url().'/outstanding-hours/">Outstanding Hours</a></li>';
 		$mylinks .= '<li><a href="'.site_url().'/add-client/">Add Client</a></li>';
+		$mylinks .= '<li><a href="'.site_url().'/unbilled-hours/">Unbilled</a></li>';
 	}
 	
 	return $nav.$mylinks;
@@ -245,4 +246,47 @@ function hyp_tag_to_taxonomy($entry, $form){
 			break;
 		}
 	}
+}
+
+
+// A callback function to add a custom field to our "hours" taxonomy
+function client_taxonomy_custom_fields($tag) {
+   // Check for existing taxonomy meta for the term you're editing
+    $t_id = $tag->term_id; // Get the ID of the term you're editing
+    $term_meta = get_option( "taxonomy_term_$t_id" ); // Do the check
+?>
+
+<tr class="form-field">
+	<th scope="row" valign="top">
+		<label for="client_is_prepay"><?php _e('Client is prepay'); ?></label>
+	</th>
+	<td>
+		<input type="text" name="term_meta[client_is_prepay]" id="term_meta[client_is_prepay]" size="25" style="width:60%;" value="<?php echo $term_meta['client_is_prepay'] ? $term_meta['client_is_prepay'] : ''; ?>"><br />
+		<span class="description"><?php _e('Does this client prepay?'); ?></span>
+	</td>
+</tr>
+
+<?php
+}
+
+// Add the fields to the "hours" taxonomy, using our callback function
+add_action( 'client_edit_form_fields', 'client_taxonomy_custom_fields', 10, 2 );
+
+// Save the changes made on the "hours" taxonomy, using our callback function
+add_action( 'edited_client', 'save_taxonomy_custom_fields', 10, 2 );
+
+// A callback function to save our extra taxonomy field(s)
+function save_taxonomy_custom_fields( $term_id ) {
+    if ( isset( $_POST['term_meta'] ) ) {
+        $t_id = $term_id;
+        $term_meta = get_option( "taxonomy_term_$t_id" );
+        $cat_keys = array_keys( $_POST['term_meta'] );
+            foreach ( $cat_keys as $key ){
+            if ( isset( $_POST['term_meta'][$key] ) ){
+                $term_meta[$key] = $_POST['term_meta'][$key];
+            }
+        }
+        //save the option array
+        update_option( "taxonomy_term_$t_id", $term_meta );
+    }
 }

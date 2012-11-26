@@ -47,22 +47,27 @@ function short_post() {
 	} else {
 		$row_color = '';
 	}
+	// used to grab the client's name
+	$term_list = wp_get_post_terms($post->ID, 'client');
 	
-	echo '<div class="tt-row '.$row_color.'">';
-		echo '<span class="hours-gravatar">';
-		echo '<a href="'. get_author_posts_url( get_the_author_meta('ID') ) .'">';
-		echo get_avatar( get_the_author_meta('ID') , $size = '24' );
-		echo '</a>';
-		echo '</span>';
-		echo '<span class="hours-work-date">'. get_post_meta( $post->ID, 'tt_work_date', TRUE ) .'</span>';
-		echo '<span class="hours-client">';
-		$term_list = wp_get_post_terms($post->ID, 'client');
-		echo $term_list[0]->name;
-		//print_r($term_list);
-		echo '</span>';
-		echo '<span class="hours-hours-worked">'. get_post_meta( $post->ID, 'tt_hours_worked', TRUE ) .'</span>';
-	echo '</div>';
-	$total_hours = $total_hours + get_post_meta( $post->ID, 'tt_hours_worked', TRUE );
+	// Get the custom fields based on the $presenter term ID
+	$client_custom_fields = get_option( "taxonomy_term_".$term_list[0]->term_id );
+	if ( $client_custom_fields[client_is_prepay] != 'yes') {
+		echo '<div class="tt-row '.$row_color.'">';
+			echo '<span class="hours-gravatar">';
+			echo '<a href="'. get_author_posts_url( get_the_author_meta('ID') ) .'">';
+			echo get_avatar( get_the_author_meta('ID') , $size = '24' );
+			echo '</a>';
+			echo '</span>';
+			echo '<span class="hours-work-date">'. get_post_meta( $post->ID, 'tt_work_date', TRUE ) .'</span>';
+			echo '<span class="hours-client">';
+			echo $term_list[0]->name;
+			//print_r($term_list);
+			echo '</span>';
+			echo '<span class="hours-hours-worked">'. get_post_meta( $post->ID, 'tt_hours_worked', TRUE ) .'</span>';
+		echo '</div>';
+		$total_hours = $total_hours + get_post_meta( $post->ID, 'tt_hours_worked', TRUE );
+	}
 		
 }
 
