@@ -14,7 +14,7 @@ function cl_hours_post_type() {
 	'view_item' => __('View Hours'),
 	'search_items' => __('Search Hours'),
 	'not_found' =>  __('No Hours found'),
-	'not_found_in_trash' => __('No Hours found in Trash'), 
+	'not_found_in_trash' => __('No Hours found in Trash'),
 	'view' =>  __('View Hours'),
 	'parent_item_colon' => ''
 	);
@@ -28,8 +28,8 @@ function cl_hours_post_type() {
 	'capability_type' => 'post',
 	'hierarchical' => false,
 	'menu_position' => null,
-	'supports' => array( 'editor', 'author' )
-	); 
+	'supports' => array( 'editor', 'author', 'custom-fields' )
+	);
 
 	register_post_type( 'hours', $args);
 }

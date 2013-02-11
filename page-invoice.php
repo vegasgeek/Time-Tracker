@@ -10,9 +10,11 @@ add_action( 'genesis_before_loop', 'ec_do_query', 99 );
 function ec_do_query() {
 	global $_GET;
 //	$tl = wp_get_post_terms($_GET['client'], 'client');
-	$term = get_term( $_GET['client'], 'client' );
-	
-	if($_GET['client']) {
+	if( isset( $_GET['client'] ) ) {
+		$term = get_term( $_GET['client'], 'client' );
+	}
+
+	if( isset( $_GET['client'] ) && $_GET['client']) {
 		$args = array(
 			'post_type' => 'hours',
 			'client' => $term->name,
@@ -47,7 +49,7 @@ function ec_do_query() {
 			)
 		);
 	}
-	
+
 	query_posts( wp_parse_args( $args ) );
 }
 
@@ -55,14 +57,11 @@ function ec_do_query() {
 
 add_action ( 'genesis_before_loop', 'tt_comp_invoice', 5 );
 function tt_comp_invoice() {
-	if ($_GET['doact'] == 'complete-invoice') {
-		
-		foreach($_GET[ticket] as $tick ) {
-//			print_r($tick);
+	if ( isset( $_GET['doact'] ) && $_GET['doact'] == 'complete-invoice') {
+
+		foreach($_GET['ticket'] as $tick ) {
 			wp_set_object_terms($tick, 'invoiced', 'hstatus', true);
 		}
-		
-		//wp_die( print_r($_GET));
 	}
 }
 
@@ -75,30 +74,36 @@ function tt_do_title() {
 	echo '<input type="hidden" name="doact" value="make-invoice">';
 	echo '<div class="invoice-form">';
 
+	if( isset( $_GET['client'] ) ) {
+		$selected_client = $_GET['client'];
+	} else {
+		$selected_client = '';
+	}
+
 	$args = array(
     'orderby'            => 'title',
     'order'              => 'ASC',
 	'show_option_none'   => 'Please Select',
-    'hide_empty'         => 1, 
+    'hide_empty'         => 1,
     'echo'               => 1,
-    'selected'           => $_GET['client'],
+    'selected'           => $selected_client,
     'name'               => 'client',
     'class'              => 'postform',
     'taxonomy'           => 'client',
     'hide_if_empty'      => false );
-	
+
 	wp_dropdown_categories( $args );
-	
-	$fdate = (empty($_GET['fromdate'])) ? date('m/d/Y', mktime(0, 0, 0, date("m")-2  , date("d"), date("Y") ) ) : $_GET['fromdate'];
-	$tdate = (empty($_GET['todate'])) ? date('m/d/Y', mktime(0, 0, 0, date("m")  , date("d")+1, date("Y") ) ) : $_GET['todate'];
-	
+
+	$fdate = (empty($_GET['fromdate'])) ? date('Ymd', mktime(0, 0, 0, date("m")-2  , date("d"), date("Y") ) ) : $_GET['fromdate'];
+	$tdate = (empty($_GET['todate'])) ? date('Ymd', mktime(0, 0, 0, date("m")  , date("d")+1, date("Y") ) ) : $_GET['todate'];
+
 	echo 'From: <input type="text" name="fromdate" value='.$fdate.'>';
 	echo 'To: <input type="text" name="todate" value="'.$tdate.'">';
 	echo '<input type="submit" value="Search">';
 	echo '</div>';
 	echo '</form>';
-	
-	
+
+
 	echo '<form action="" method="GET">';
 	echo '<input type="hidden" name="doact" value="complete-invoice">';
 	echo '<div class="hours-head"><span class="hours-gravatar">&nbsp;</span><span class="hours-work-date">Work Date</span><span class="hours-client">Client</span><span class="hours-work-done">Work Done</span><span class="hours-hours-worked">Hours</span></div>';
@@ -125,7 +130,7 @@ function short_post() {
 		echo get_avatar( get_the_author_meta('ID') , $size = '24' );
 		echo '</a>';
 		echo '</span>';
-		echo '<span class="hours-work-date">'. get_post_meta( $post->ID, 'tt_work_date', TRUE ) .'</span>';
+		echo '<span class="hours-work-date">'. date( 'm/d/Y', strtotime( str_replace( '.', '', get_post_meta( $post->ID, 'tt_work_date', TRUE ) ) ) ) .'</span>';
 		echo '<span class="hours-client">';
 		$term_list = wp_get_post_terms($post->ID, 'client');
 		echo $term_list[0]->name;

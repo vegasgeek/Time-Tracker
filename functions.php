@@ -15,7 +15,7 @@
  * Theme Setup
  * @since 1.0.0
  *
- * This setup function attaches all of the site-wide functions 
+ * This setup function attaches all of the site-wide functions
  * to the correct hooks and filters. All the functions themselves
  * are defined below this setup function.
  *
@@ -23,15 +23,15 @@
 
 add_action('genesis_setup','child_theme_setup', 15);
 function child_theme_setup() {
-	
-	// ** Backend **	
-	
+
+	// ** Backend **
+
 	// Image Sizes
 	// add_image_size ('be_featured', 400, 100, true );
-	
+
 	// Menus
 	add_theme_support( 'genesis-menus', array( 'primary' => 'Primary Navigation Menu' ) );
-	
+
 	// Sidebars
 	//unregister_sidebar('sidebar-alt');
 	//genesis_register_sidebar(array('name' => 'Blog Sidebar', 'id' => 'blog-sidebar'));
@@ -39,15 +39,15 @@ function child_theme_setup() {
 
 	// Remove Unused Page Layouts
 	//genesis_unregister_layout( 'full-width-content' );
-	//genesis_unregister_layout( 'content-sidebar' );	
+	//genesis_unregister_layout( 'content-sidebar' );
 	//genesis_unregister_layout( 'sidebar-content' );
 	//genesis_unregister_layout( 'content-sidebar-sidebar' );
 	//genesis_unregister_layout( 'sidebar-sidebar-content' );
 	//genesis_unregister_layout( 'sidebar-content-sidebar' );
-	
+
 	// Remove Unused Theme Settings
 	add_action( 'genesis_theme_settings_metaboxes', 'be_remove_metaboxes' );
-	
+
 	// Remove Unused User Settings
 	add_filter( 'user_contactmethods', 'be_contactmethods' );
 	remove_action( 'show_user_profile', 'genesis_user_options_fields' );
@@ -61,26 +61,26 @@ function child_theme_setup() {
 	remove_action('genesis_after_post', 'genesis_do_author_box_single');
 	// Editor Styles
 	add_editor_style( 'editor-style.css' );
-		
+
 	// Setup Theme Settings
 	//include_once( CHILD_DIR . '/lib/functions/child-theme-settings.php');
-	
+
 	// Don't update theme
 	add_filter( 'http_request_args', 'be_dont_update_theme', 5, 2 );
-		
-	// ** Frontend **		
-	
+
+	// ** Frontend **
+
 	// Remove Edit link
 	add_filter( 'genesis_edit_post_link', '__return_false' );
-	
+
 	// Remove Genesis Footer
 	remove_action( 'genesis_footer', 'genesis_do_footer' );
-	
+
 	// bring in CPTs, metaboxes, etc.
 	require_once( 'cpt-hours.php' );
 	require_once( 'lib/metabox/init.php' );
 	require_once( 'create-taxonomy.php' );
-	
+
 }
 
 // ** Backend Functions ** //
@@ -89,13 +89,13 @@ function child_theme_setup() {
  * Remove Metaboxes
  * @since 1.0.0
  *
- * This removes unused or unneeded metaboxes from Genesis > Theme Settings. 
+ * This removes unused or unneeded metaboxes from Genesis > Theme Settings.
  * See /genesis/lib/admin/theme-settings for all metaboxes.
  *
  * @author Bill Erickson
  * @link http://www.billerickson.net/code/remove-metaboxes-from-genesis-theme-settings/
  */
- 
+
 function be_remove_metaboxes( $_genesis_theme_settings_pagehook ) {
 	remove_meta_box( 'genesis-theme-settings-header', $_genesis_theme_settings_pagehook, 'main' );
 //	remove_meta_box( 'genesis-theme-settings-nav', $_genesis_theme_settings_pagehook, 'main' );
@@ -117,7 +117,7 @@ function be_contactmethods( $contactmethods ) {
 	unset( $contactmethods['aim'] );
 	unset( $contactmethods['yim'] );
 	unset( $contactmethods['jabber'] );
-	
+
 	return $contactmethods;
 }
 
@@ -125,7 +125,7 @@ function be_contactmethods( $contactmethods ) {
  * Don't Update Theme
  * @since 1.0.0
  *
- * If there is a theme in the repo with the same name, 
+ * If there is a theme in the repo with the same name,
  * this prevents WP from prompting an update.
  *
  * @author Mark Jaquith
@@ -148,39 +148,47 @@ function be_dont_update_theme( $r, $url ) {
 
 // ** Frontend Functions ** //
 
+/**
+ * Prepopulates form field with dropdowns
+ */
 
-add_filter('gform_pre_render_1', 'populate_clients');
+add_filter( 'gform_pre_render_1', 'populate_clients');
+add_filter( 'gform_pre_render_3', 'populate_clients');
 
 function populate_clients($form) {
 	foreach($form['fields'] as &$field) {
 		if($field['type'] != 'select' || strpos($field['cssClass'], 'client-drop') === false)
 		continue;
-		
+
 		$posts = get_terms( 'client', 'orderby=title&hide_empty=0' );
-		
+
 		$choices = array(array('text' => 'Select a Client', 'value' => ' '));
 	//	$choices[] = array ('text' => 'Select a Client', 'value' => '' );
-		
+
 		foreach($posts as $post){
 			$choices[] = array('text' => $post->name, 'value' => $post->name);
 		}
 
 		$field['choices'] = $choices;
 	}
-	
+
 	return $form;
 }
 
+/**
+ * This addes the client as a taxonomy to the hours entry.
+ */
 
 add_action('gform_post_submission', 'tt_tag_to_taxonomy', 10, 2);
 function tt_tag_to_taxonomy($entry, $form){
 
-    $post_id = $entry['post_id'];
+	$post_id = $entry['post_id'];
     $taxonomy = '';
 
     foreach($form['fields'] as $field) {
         switch($form['id']) {
         case 1: // enter your form ID here
+        case 3: // enter your form ID here
            switch($field['id']) {
            case 1: // update to a field ID which contains a list of tags
               $taxonomy = 'client';
@@ -188,7 +196,7 @@ function tt_tag_to_taxonomy($entry, $form){
               break;
            }
            break;
-        case 2: // enter your form ID here
+        case 99: // enter your form ID here (not currently being used)
            switch($field['id']) {
            case 13: // update to a field ID which contains a list of tags
               $taxonomy = 'your-tax-name';
@@ -227,11 +235,15 @@ function tt_mylinks ($nav){
 		$mylinks .= '<li><a href="'.site_url().'/add-client/">Add Client</a></li>';
 		$mylinks .= '<li><a href="'.site_url().'/unbilled-hours/">Unbilled</a></li>';
 	}
-	
+
 	return $nav.$mylinks;
 }
 
 
+/**
+ * Since 1.0
+ * This function is related to the add client form
+ */
 
 add_action('gform_post_submission', 'hyp_tag_to_taxonomy', 10, 2);
 function hyp_tag_to_taxonomy($entry, $form){
@@ -242,12 +254,17 @@ function hyp_tag_to_taxonomy($entry, $form){
 	foreach($form['fields'] as $field) {
 		switch($form['id']) {
 			case 2: // enter your form ID here
-				wp_insert_term( $entry[1], 'client');
+				wp_insert_term( $entry[3], 'client');
 			break;
 		}
 	}
 }
 
+/**
+ * Not sure what this does right now.
+ * @param type $tag
+ *
+ */
 
 // A callback function to add a custom field to our "hours" taxonomy
 function client_taxonomy_custom_fields($tag) {
@@ -289,4 +306,12 @@ function save_taxonomy_custom_fields( $term_id ) {
         //save the option array
         update_option( "taxonomy_term_$t_id", $term_meta );
     }
+}
+
+// Convert the gravity forms date field
+
+add_action("gform_pre_submission", "pre_submission_handler");
+function pre_submission_handler($form){
+	$_POST['input_11'] = $_POST['input_10'] . $_POST['input_7'] . $_POST['input_8'];
+
 }

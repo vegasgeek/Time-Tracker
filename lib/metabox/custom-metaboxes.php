@@ -16,7 +16,7 @@ function be_sample_metaboxes( $meta_boxes ) {
 				'name' => 'Date Work Performed',
 				'desc' => '',
 				'id' => $prefix . 'work_date',
-				'type' => 'text_date'
+				'type' => 'text_small'
 			),
 			array(
 				'name' => '# of hours worked',
