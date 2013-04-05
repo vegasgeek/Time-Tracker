@@ -308,10 +308,14 @@ function save_taxonomy_custom_fields( $term_id ) {
     }
 }
 
-// Convert the gravity forms date field
-
-add_action("gform_pre_submission", "pre_submission_handler");
-function pre_submission_handler($form){
-	$_POST['input_11'] = $_POST['input_10'] . $_POST['input_7'] . $_POST['input_8'];
-
+// Convert the datepicker field from MM/DD/YYYY to YYYYMMDD
+add_action('gform_after_submission', 'time_after_submission_handler', 10, 2 );
+function time_after_submission_handler( $lead, $form ){
+	foreach ( $form['fields'] as $field ) {
+		if ( isset( $field['postCustomFieldName'] ) && $field['postCustomFieldName'] == 'tt_work_date' ) {
+			$time = strtotime( $_POST['input_' . $field['id']] );
+			if ( $time )
+				update_post_meta( $lead['post_id'], 'tt_work_date', date( 'Ymd', $time ) );
+		}
+	}
 }
