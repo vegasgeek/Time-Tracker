@@ -154,6 +154,7 @@ function be_dont_update_theme( $r, $url ) {
 
 add_filter( 'gform_pre_render_1', 'populate_clients');
 add_filter( 'gform_pre_render_3', 'populate_clients');
+add_filter( 'gform_pre_render_4', 'populate_clients');
 
 function populate_clients($form) {
 	foreach($form['fields'] as &$field) {
@@ -189,6 +190,7 @@ function tt_tag_to_taxonomy($entry, $form){
         switch($form['id']) {
         case 1: // enter your form ID here
         case 3: // enter your form ID here
+        case 4: // enter your form ID here
            switch($field['id']) {
            case 1: // update to a field ID which contains a list of tags
               $taxonomy = 'client';
