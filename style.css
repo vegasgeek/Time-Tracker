@@ -589,7 +589,7 @@ blockquote {
 }
 
 .entry-content p {
-	padding: 0 0 15px;
+	padding: 0 0 5px;
 }
 
 p.subscribe-to-comments {
@@ -1453,8 +1453,9 @@ div.gform_wrapper .gform_footer {
 }
 
 .hours-head {
-	width: 100%;
+	width: 97%;
 	background: #CCC;
+	margin-left: 20px;
 	margin-bottom: 10px;
 }
 
@@ -1472,19 +1473,19 @@ div.gform_wrapper .gform_footer {
 
 .hours-client {
 	width: 300px;
+	overflow: hidden;
 }
 
 .hours-hours-worked {
 	width: 75px;
 	float: right;
 	text-align: right;
-	padding-right: 5px;
+	padding-right: 10px;
 }
 
 .hours-work-done {
 	float: right;
-	width: 450px;
-	margin-left: 50px;
+	width: 350px;
 }
 
 .hours-check {
@@ -1500,4 +1501,31 @@ div.gform_wrapper .gform_footer {
 
 .invoiced {
 	background-color: #FF7373;
+}
+
+.tt-separator {
+	border-bottom: 1px solid #f90;
+	margin-bottom: 6px;
+}
+
+.user-total-hours {
+	float: right;
+	width: 75px;
+	text-align: right;
+	padding-right: 5px;
+}
+
+.hours-user {
+	float: left;
+	width: 110px;
+	margin-bottom: 2px;
+	line-height: 24px;
+}
+
+.hours-user a {
+	width: 24px;
+	height: 24px;
+	float: left;
+	display: block;
+	margin: 0px 5px 0px 0px;
 }

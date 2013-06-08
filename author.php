@@ -31,7 +31,7 @@ function short_post() {
 	}
 
 	echo '<div class="tt-row '.$row_color.'">';
-		echo '<span class="hours-work-date">'. date( 'm/d/Y', strtotime( str_replace( '.', '', get_post_meta( $post->ID, 'tt_work_date', TRUE ) ) ) ) .'</span>';
+		echo '<span class="hours-work-date">'. date_i18n(get_option('date_format') ,strtotime( get_post_meta( $post->ID, 'tt_work_date', TRUE ) ) ) .'</span>';
 		echo '<span class="hours-client">';
 		$term_list = wp_get_post_terms($post->ID, 'client');
 		echo $term_list[0]->name;
