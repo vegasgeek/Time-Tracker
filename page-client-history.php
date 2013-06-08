@@ -22,13 +22,6 @@ foreach ( $terms as $term ) {
 		   'post_type' => 'hours',
 		   'posts_per_page'	=> -1,
 		   'tax_query' => array(
-			   'relation' => 'AND',
-			   array(
-				   'taxonomy' => 'hstatus',
-				   'field' => 'slug',
-				   'terms' => 'invoiced',
-				   'operator' => 'NOT IN'
-			   ),
 			   array(
 				   'taxonomy' => 'client',
 				   'field' => 'slug',
@@ -62,7 +55,7 @@ foreach ( $terms as $term ) {
 			   echo '<span class="hours-client">';
 			   echo $term->name;
 			   echo '</span>';
-			   echo '<span class="hours-hours-worked">'. number_format( $not_billed, 2 ) .'</span>';
+			   echo '<span class="hours-hours-worked">'. number_format( $not_billed, 2) .'</span>';
 		   echo '</div>';
 	   $not_billed_total += $not_billed;
 	   }
@@ -74,8 +67,8 @@ foreach ( $terms as $term ) {
 
 add_action ( 'genesis_before_loop', 'tt_do_title' );
 function tt_do_title() {
-	echo '<h1>Unbilled Hours</h1>';
-	echo '<div class="hours-head"><span class="hours-client">Client</span><span class="hours-hours-worked">Unbilled</span></div>';
+	echo '<h1>Total Hours</h1>';
+	echo '<div class="hours-head"><span class="hours-client">Client</span><span class="hours-hours-worked">Total Billed</span></div>';
 }
 
 genesis();

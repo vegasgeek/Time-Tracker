@@ -236,6 +236,7 @@ function tt_mylinks ($nav){
 		$mylinks .= '<li><a href="'.site_url().'/outstanding-hours/">Outstanding Hours</a></li>';
 		$mylinks .= '<li><a href="'.site_url().'/add-client/">Add Client</a></li>';
 		$mylinks .= '<li><a href="'.site_url().'/unbilled-hours/">Unbilled</a></li>';
+		$mylinks .= '<li><a href="'.site_url().'/client-history/">Client History</a></li>';
 	}
 
 	return $nav.$mylinks;

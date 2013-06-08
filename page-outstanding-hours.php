@@ -34,17 +34,6 @@ function ec_do_query() {
 		$args['client'] = $term->name;
 	}
 
-/*
-	if($_GET['client']) {
-		$args['meta_query'] = array(
-			array(
-				'key' => 'tt_work_date',
-				'value' => array( $_GET['fromdate'], $_GET['todate'] ),
-				'compare' => 'BETWEEN'
-			)
-	);
-	}
-*/
 	$from_date = isset( $_GET['fromdate'] ) ? $_GET['fromdate'] : '';
 	$to_date = isset( $_GET['todate'] ) ? $_GET['todate'] : '';
 
@@ -184,7 +173,7 @@ function short_post() {
 			echo $user_name;
 			echo '<div class="clear"></div>';
 			echo '</span>';
-			echo '<span class="hours-work-date">'. get_post_meta( $post->ID, 'tt_work_date', TRUE ) .'</span>';
+			echo '<span class="hours-work-date">'. date_i18n(get_option('date_format') ,strtotime( get_post_meta( $post->ID, 'tt_work_date', TRUE ) ) ) .'</span>';
 			echo '<span class="hours-client">';
 			$client_id = $term_list[0]->term_id;
 			$client_name = $term_list[0]->name;
