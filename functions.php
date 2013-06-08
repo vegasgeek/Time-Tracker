@@ -177,7 +177,7 @@ function populate_clients($form) {
 }
 
 /**
- * This addes the client as a taxonomy to the hours entry.
+ * This adds the client as a taxonomy to the hours entry.
  */
 
 add_action('gform_post_submission', 'tt_tag_to_taxonomy', 10, 2);
@@ -255,8 +255,8 @@ function hyp_tag_to_taxonomy($entry, $form){
 
 	foreach($form['fields'] as $field) {
 		switch($form['id']) {
-			case 2: // enter your form ID here
-				wp_insert_term( $entry[3], 'client');
+			case 2: // This is the form ID
+				wp_insert_term( $entry[1], 'client');
 			break;
 		}
 	}
